@@ -51,7 +51,7 @@ export class ExportService {
       return {
         preferences: { ...defaultPreferences, ...preferences },
         apiKeys,
-        chatMessages: messages,
+        // chatMessages: messages,
         chatSessions: chatSessions.map((session) => ({
           ...session,
           isExample: session.isExample ?? false,

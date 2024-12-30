@@ -11,3 +11,4 @@ export * from "./use-scroll-to-bottom";
 export * from "./use-text-selection";
 export * from "./use-title-generator";
 export * from "./use-tools";
+export * from "./use-openrouter";

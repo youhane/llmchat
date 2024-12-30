@@ -18,7 +18,7 @@ export type TLLMRunConfig = {
   context?: string;
   input?: string;
   image?: string;
-  sessionId: string;
+  sessionId?: string;
   messageId?: string;
   assistant: TAssistant;
 };

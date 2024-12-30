@@ -9,6 +9,7 @@ import {
   useChatEditor,
   useImageAttachment,
   useLLMRunner,
+  useOpenRouter,
 } from "@/lib/hooks";
 import { slideUpVariant } from "@/lib/utils/animations";
 import { cn } from "@/lib/utils/clsx";
@@ -36,6 +37,7 @@ export const ChatInput = () => {
   const { preferences, isPreferencesReady } = usePreferenceContext();
   const { getAssistantByKey, getAssistantIcon } = useAssistantUtils();
   const { invokeModel } = useLLMRunner();
+  const { invokeOpenRouter } = useOpenRouter();
   const { editor } = useChatEditor();
   const session = store((state) => state.session);
   const isInitialized = store((state) => state.isInitialized);
@@ -55,18 +57,23 @@ export const ChatInput = () => {
   }, [session?.id]);
 
   const sendMessage = (input: string) => {
-    if (!isReady) return;
-    const props = getAssistantByKey(preferences.defaultAssistant);
-    if (!props || !session) return;
+    // if (!isReady) return;
+    // const props = getAssistantByKey(preferences.defaultAssistant);
+    // console.log("props", props);
+    // console.log("session", session);
+    // console.log("isInitialized", isInitialized);
+    console.log("input", input)
+    // if (!props) return;
     setIsInitialized(true);
 
-    invokeModel({
-      input,
-      context,
-      image: attachment?.base64,
-      sessionId: session.id,
-      assistant: props.assistant,
-    });
+    // invokeModel({
+    //   input,
+    //   context,
+    //   image: attachment?.base64,
+    //   // sessionId: session.id,
+    //   assistant: props.assistant,
+    // });
+    invokeOpenRouter(input, context);
     clearAttachment();
   };
 
@@ -132,13 +139,13 @@ export const ChatInput = () => {
     );
   };
 
-  if (!isReady || !isPreferencesReady) {
-    return (
-      <div className={chatInputBackgroundContainer}>
-        <FullPageLoader label="Initializing chat" />
-      </div>
-    );
-  }
+  // if (!isReady || !isPreferencesReady) {
+  //   return (
+  //     <div className={chatInputBackgroundContainer}>
+  //       <FullPageLoader label="Initializing chat" />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className={chatInputBackgroundContainer}>
@@ -146,7 +153,7 @@ export const ChatInput = () => {
         className={cn(
           "absolute bottom-0 left-0 right-0 h-[120px] bg-gradient-to-t from-zinc-25 from-40% to-transparent dark:bg-zinc-800/50 dark:from-zinc-800",
           isFreshSession &&
-            "top-0 flex h-full flex-col items-center justify-center",
+          "top-0 flex h-full flex-col items-center justify-center",
         )}
       />
 

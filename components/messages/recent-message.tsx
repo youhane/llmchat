@@ -7,10 +7,11 @@ import {
 import { useEffect } from "react";
 import { ChatScrollAnchor } from "../chat-scroll-anchor";
 import { Message } from "./message";
+import { useOpenRouterStore } from "@/libs/store/openrouter.ts/store";
 
 export const RecentMessage = () => {
   const { store } = useChatContext();
-  const currentMessage = store((state) => state.currentMessage);
+  // const currentMessage = store((state) => state.currentMessage);
   const isGenerating = store((state) => state.isGenerating);
   const prevMessagesIds = store((state) =>
     state.messages.map((message) => message.id),
@@ -21,6 +22,7 @@ export const RecentMessage = () => {
   const { generateRelatedQuestion } = useRelatedQuestions();
   const { addMessageMutation } = useSessions();
   const { isAtBottom, scrollToBottom } = useScrollToBottom();
+  const {messages, currentMessage} = useOpenRouterStore();
 
   useEffect(() => {
     if (currentMessage?.id && prevMessagesIds?.includes(currentMessage?.id)) {
@@ -79,6 +81,9 @@ export const RecentMessage = () => {
     if (currentMessage?.id) {
       scrollToBottom();
     }
+    console.log("messages", messages)
+    console.log("currentMessage", currentMessage);
+    console.log("isGenerating", isGenerating);
   }, [
     isGenerating,
     currentMessage?.relatedQuestions?.length,

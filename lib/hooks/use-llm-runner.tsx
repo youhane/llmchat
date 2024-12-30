@@ -47,6 +47,7 @@ export const useLLMRunner = () => {
   const { setApiKeyModalProvider, setOpenApiKeyModal } = useRootContext();
 
   const invokeModel = async (config: TLLMRunConfig) => {
+    console.log("config", config);
     if (!user && config.assistant.baseModel === "llmchat") {
       openSignIn();
       return;
@@ -56,35 +57,38 @@ export const useLLMRunner = () => {
         model: config.assistant.baseModel,
       },
     });
+    console.log("if 1")
 
     //to avoid duplication not refetch when regenerating
     if (!config?.messageId) {
       refetch();
     }
+    console.log("if 2")
     resetState();
 
     const currentAbortController = new AbortController();
     setAbortController(currentAbortController);
-    const { sessionId, messageId, input, context, image, assistant } = config;
+    const { messageId, input, context, image, assistant } = config;
     const newMessageId = messageId || generateShortUUID();
     const modelKey = assistant.baseModel;
-    const session = await sessionsService.getSessionById(sessionId);
+    // const session = await sessionsService.getSessionById(sessionId);
 
-    if (!session) {
-      setIsGenerating(false);
-      toast({
-        title: "Error",
-        description: "Session not found",
-        variant: "destructive",
-      });
-      return;
-    }
-    const messages = await messagesService.getMessages(sessionId);
+    // if (!session) {
+    //   setIsGenerating(false);
+    //   toast({
+    //     title: "Error",
+    //     description: "Session not found",
+    //     variant: "destructive",
+    //   });
+    //   return;
+    // }
+    // const messages = await messagesService.getMessages(sessionId);
 
-    const allPreviousMessages =
-      messages?.filter((m) => m.id !== messageId) || [];
+    // const allPreviousMessages =
+    //   messages?.filter((m) => m.id !== messageId) || [];
     const messageLimit =
       preferences.messageLimit || defaultPreferences.messageLimit;
+    console.log("messageLimit", messageLimit)
 
     const selectedModelKey = getModelByKey(
       modelKey,
@@ -94,9 +98,12 @@ export const useLLMRunner = () => {
       throw new Error("Model not found");
     }
 
+    console.log("selectedModelKey", selectedModelKey)
     const apiKey = await preferencesService.getApiKey(
       selectedModelKey.provider,
     );
+    // didnt go through here
+    console.log("apiKey", apiKey)
     if (
       !apiKey?.key &&
       !["ollama", "llmchat"].includes(selectedModelKey?.provider)
@@ -106,14 +113,15 @@ export const useLLMRunner = () => {
       setOpenApiKeyModal(true);
       return;
     }
+    console.log("if 3")
     editor?.commands.clearContent();
     setIsGenerating(true);
 
     setCurrentMessage({
       runConfig: config,
       id: newMessageId,
-      parentId: sessionId,
-      sessionId,
+      parentId: "sessionId",
+      sessionId: "",
       rawHuman: input || null,
       stop: false,
       stopReason: null,
@@ -130,11 +138,12 @@ export const useLLMRunner = () => {
       context,
       image,
       memories: preferences.memories,
-      hasMessages: allPreviousMessages.length > 0,
+      hasMessages: true,
       systemPrompt:
-        session.customAssistant?.systemPrompt ||
+        // session.customAssistant?.systemPrompt ||
         injectPresetValues(assistant.systemPrompt),
     });
+    console.log("prompt")
 
     const availableTools = getAvailableTools(selectedModelKey);
 
@@ -172,6 +181,7 @@ export const useLLMRunner = () => {
         maxIterations: 5,
       });
     }
+    console.log("if 4")
     const chainWithoutTools = prompt.pipe(
       selectedModel.bind({
         signal: currentAbortController?.signal,
@@ -186,9 +196,11 @@ export const useLLMRunner = () => {
         : chainWithoutTools;
 
     const chatHistory = await constructMessagePrompt({
-      messages: allPreviousMessages,
+      messages: [],
       limit: messageLimit,
     });
+
+    console.log("got here")
 
     try {
       const stream: any = await executor.invoke(

@@ -124,7 +124,7 @@ export const Sidebar = () => {
           </Button>
         </Flex>
 
-        {isAllSessionLoading ? (
+        {false ? (
           <FullPageLoader />
         ) : (
           <Flex
