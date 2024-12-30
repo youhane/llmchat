@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "prisma:validate": "prisma validate",
+    "prisma:generate": "prisma generate",
+    "build": "npm run prisma:validate && npm run prisma:generate && next build",
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky",
