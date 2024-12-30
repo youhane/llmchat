@@ -29,6 +29,8 @@ import { ImageDropzoneRoot } from "./image-dropzone-root";
 import { ScrollToBottomButton } from "./scroll-to-bottom-button";
 import { SelectedContext } from "./selected-context";
 import { StarterMessages } from "./starter-messages";
+import { useOpenRouterStore } from "@/libs/store/openrouter.ts/store";
+import { cleanObjectAndMakeIntoString } from "@/libs/utils/utils";
 
 export const ChatInput = () => {
   const { store, isReady, refetch } = useChatContext();
@@ -42,9 +44,10 @@ export const ChatInput = () => {
   const session = store((state) => state.session);
   const isInitialized = store((state) => state.isInitialized);
   const setIsInitialized = store((state) => state.setIsInitialized);
-  const context = store((state) => state.context);
+  // const context = store((state) => state.context);
   const { attachment, clearAttachment, handleImageUpload, dropzonProps } =
     useImageAttachment();
+  const {chats} = useOpenRouterStore();
 
   const isFreshSession = !isInitialized;
 
@@ -57,23 +60,11 @@ export const ChatInput = () => {
   }, [session?.id]);
 
   const sendMessage = (input: string) => {
-    // if (!isReady) return;
-    // const props = getAssistantByKey(preferences.defaultAssistant);
-    // console.log("props", props);
-    // console.log("session", session);
-    // console.log("isInitialized", isInitialized);
     console.log("input", input)
-    // if (!props) return;
     setIsInitialized(true);
 
-    // invokeModel({
-    //   input,
-    //   context,
-    //   image: attachment?.base64,
-    //   // sessionId: session.id,
-    //   assistant: props.assistant,
-    // });
-    invokeOpenRouter(input, context);
+    // invokeOpenRouter(input, cleanObjectAndMakeIntoString(chats));
+    invokeOpenRouter(input);
     clearAttachment();
   };
 
@@ -138,14 +129,6 @@ export const ChatInput = () => {
       </>
     );
   };
-
-  // if (!isReady || !isPreferencesReady) {
-  //   return (
-  //     <div className={chatInputBackgroundContainer}>
-  //       <FullPageLoader label="Initializing chat" />
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className={chatInputBackgroundContainer}>

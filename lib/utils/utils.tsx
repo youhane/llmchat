@@ -119,3 +119,12 @@ export const formatTickerTime = (seconds: number): string => {
   const remainingSeconds = seconds % 60;
   return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 };
+
+export const cleanObjectAndMakeIntoString = (obj: any) => {
+  return JSON.stringify(obj, (key, value) => {
+    if (value === null || value === undefined) {
+      return undefined;
+    }
+    return value;
+  });
+}

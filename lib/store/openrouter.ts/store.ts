@@ -1,14 +1,14 @@
 import create from "zustand";
 
 const initialState = {
-  messages: [],
+  chats: [],
   currentMessage: undefined,
 };
 
 interface OpenRouterStoreState {
-  messages: any[];
+  chats: any[];
   currentMessage: any;
-  setMessages: (messages: any) => void;
+  setChats: (questions:any, answers: any) => void;
   updateCurrentMessage: (message: any) => void;
   removeLastMessage: () => void;
 }
@@ -16,8 +16,13 @@ interface OpenRouterStoreState {
 export const useOpenRouterStore = create<OpenRouterStoreState>((set, get) => ({
   ...initialState,
 
-  setMessages: (messages: any) => {
-    set({ messages });
+  setChats: (questions:any, answers: any) => {
+    // make a new chat object with key value pairs of questions and answers and push it to chats
+    const newChat = { questions, answers };
+    const { chats } = get();
+    const newChats = [...chats, newChat];
+    console.log("newChats", newChats);
+    set({ chats: newChats });
   },
 
   updateCurrentMessage: (message: any) => {
@@ -29,8 +34,8 @@ export const useOpenRouterStore = create<OpenRouterStoreState>((set, get) => ({
   },
 
   removeLastMessage: () => {
-    const { messages } = get();
-    const newMessages = messages.slice(0, -1);
-    set({ messages: newMessages });
+    const { chats } = get();
+    const newMessages = chats.slice(0, -1);
+    set({ chats: newMessages });
   },
 }));

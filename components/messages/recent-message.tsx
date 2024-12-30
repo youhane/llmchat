@@ -22,7 +22,7 @@ export const RecentMessage = () => {
   const { generateRelatedQuestion } = useRelatedQuestions();
   const { addMessageMutation } = useSessions();
   const { isAtBottom, scrollToBottom } = useScrollToBottom();
-  const {messages, currentMessage} = useOpenRouterStore();
+  const {chats, currentMessage} = useOpenRouterStore();
 
   useEffect(() => {
     if (currentMessage?.id && prevMessagesIds?.includes(currentMessage?.id)) {
@@ -81,7 +81,7 @@ export const RecentMessage = () => {
     if (currentMessage?.id) {
       scrollToBottom();
     }
-    console.log("messages", messages)
+    console.log("messages", chats)
     console.log("currentMessage", currentMessage);
     console.log("isGenerating", isGenerating);
   }, [

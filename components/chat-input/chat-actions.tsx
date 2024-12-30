@@ -60,7 +60,6 @@ export const ChatActions = ({
           <Button
             size="sm"
             variant={hasTextInput ? "default" : "secondary"}
-            // disabled={!isReady || !hasTextInput || isGenerating}
             onClick={() => {
               editor?.getText() && sendMessage(editor?.getText());
             }}
