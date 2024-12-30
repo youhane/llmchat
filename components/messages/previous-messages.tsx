@@ -15,8 +15,8 @@ export const PreviousMessages = () => {
     console.log("message", message);
     // return <Message message={message} isLast={false} key={message.id} />;
     return <CustomChat
-      answer={message.answers[0].content}
-      question={message.questions}
+      answer={message.answer}
+      question={message.question}
     />
   };
 
