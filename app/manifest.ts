@@ -2,10 +2,10 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "LLMChat",
-    short_name: "LLMChat",
+    name: "aigator",
+    short_name: "aigator",
     description:
-      "LLMChat is a modern AI chat client that allows you to chat with AI in a more intuitive way.",
+      "aigator is a modern AI chat client that allows you to chat with AI in a more intuitive way.",
     start_url: "/",
     display: "standalone",
     background_color: "#fff",

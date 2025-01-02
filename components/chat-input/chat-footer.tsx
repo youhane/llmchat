@@ -9,7 +9,7 @@ export const ChatFooter = () => {
         textColor="tertiary"
         className="inline-block text-center"
       >
-        LLMChat is open source and your data is stored locally. project by{" "}
+        aigator - forked version of LLMChat{" "}
         <Link
           href="https://trendy.design"
           target="_blank"

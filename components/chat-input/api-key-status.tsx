@@ -24,14 +24,15 @@ export const ApiKeyStatus = () => {
           textColor="secondary"
           className="rounded-full bg-zinc-50 px-3 py-1.5 text-center"
         >
-          LLMChat is free to use with daily limits.{" "}
+          aigator - dev version
+          {/* LLMChat is free to use with daily limits.{" "}
           <span
             className="inline-block cursor-pointer px-1 underline decoration-zinc-500/20 underline-offset-2"
             onClick={openSignIn}
           >
             Sign in
           </span>{" "}
-          required.
+          required. */}
         </Type>
       </Flex>
     );
