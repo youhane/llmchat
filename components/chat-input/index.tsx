@@ -135,8 +135,8 @@ export const ChatInput = () => {
       <div
         className={cn(
           "absolute bottom-0 left-0 right-0 h-[120px] bg-gradient-to-t from-zinc-25 from-40% to-transparent dark:bg-zinc-800/50 dark:from-zinc-800",
-          isFreshSession &&
-          "top-0 flex h-full flex-col items-center justify-center",
+          // isFreshSession &&
+          // "top-0 flex h-full flex-col items-center justify-center",
         )}
       />
 
@@ -149,17 +149,17 @@ export const ChatInput = () => {
             gap="md"
             className="mb-2 flex-1"
           >
-            <Badge
+            {/* <Badge
               onClick={() => setOpenChangelog(true)}
               className="cursor-pointer gap-1"
               variant="tertiary"
             >
               <Flame size={14} /> What&apos;s new
-            </Badge>
+            </Badge> */}
 
             <ChangeLogs open={openChangelog} setOpen={setOpenChangelog} />
 
-            {session?.customAssistant ? (
+            {/* {session?.customAssistant ? (
               <CustomAssistantAvatar
                 url={session?.customAssistant?.iconURL}
                 alt={session?.customAssistant?.name}
@@ -167,17 +167,17 @@ export const ChatInput = () => {
               />
             ) : (
               getAssistantIcon(preferences.defaultAssistant, "lg", true)
-            )}
+            )} */}
             <Flex direction="col" gap="xs" justify="center" items="center">
-              <Type
+              {/* <Type
                 size="lg"
                 textColor={session?.customAssistant ? "primary" : "secondary"}
               >
                 {session?.customAssistant
                   ? session?.customAssistant?.name
                   : "How can I help you?"}
-              </Type>
-              {session?.customAssistant && (
+              </Type> */}
+              {/* {session?.customAssistant && (
                 <Type
                   size="sm"
                   textColor="secondary"
@@ -185,8 +185,8 @@ export const ChatInput = () => {
                 >
                   {session?.customAssistant?.description}
                 </Type>
-              )}
-              {session?.customAssistant && (
+              )} */}
+              {/* {session?.customAssistant && (
                 <Button
                   variant="bordered"
                   size="sm"
@@ -201,9 +201,9 @@ export const ChatInput = () => {
                 >
                   Remove
                 </Button>
-              )}
+              )} */}
             </Flex>
-            <ApiKeyStatus />
+            {/* <ApiKeyStatus /> */}
           </Flex>
         )}
         {renderChatBottom()}
