@@ -3,7 +3,6 @@ import { NextResponse } from 'next/server';
 
 export const revalidate = 0; // disable cache
 export const dynamic = 'force-dynamic';
-export const maxDuration = 300; // 5 minutes
 export const fetchCache = 'force-no-store';
 
 export async function GET(req: Request) {
