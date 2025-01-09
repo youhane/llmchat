@@ -1,8 +1,5 @@
 import { useChatContext } from "@/lib/context";
-import { useScrollToBottom } from "@/lib/hooks";
-import { TChatMessage } from "@/lib/types";
 import { useMemo } from "react";
-import { Message } from "./message";
 import { useOpenRouterStore } from "@/libs/store/openrouter.ts/store";
 import { CustomChat } from "./customChat";
 
@@ -13,10 +10,11 @@ export const PreviousMessages = () => {
 
   const renderMessage = (message: any) => {
     console.log("message", message);
-    // return <Message message={message} isLast={false} key={message.id} />;
     return <CustomChat
       answer={message.answer}
       question={message.question}
+      model={message?.model}
+      intent={message?.intent}
     />
   };
 

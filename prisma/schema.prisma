@@ -7,22 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model User {
-//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-//   email     String   @unique
-//   name      String?
-//   chatIds   String[] @db.ObjectId
-//   chats     Chat[]   @relation(fields: [chatIds], references: [id])
-//   messages  Message[]
-//   createdAt DateTime @default(now())
-// }
-
 model Chat {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  // title     String
-  // userIds   String[] @db.ObjectId
-  // users     User[]    @relation(fields: [userIds], references: [id])
   question  String
   answer    String
+  model     String
+  intent    String
   createdAt DateTime @default(now())
 }

@@ -1,4 +1,3 @@
-import { TChatMessage } from "@/lib/types";
 import { cn } from "@/lib/utils/clsx";
 import { Flex } from "@/ui";
 import {
@@ -9,14 +8,12 @@ import {
   AccordionTrigger,
 } from "@radix-ui/react-accordion";
 import { FC, forwardRef } from "react";
-import { AIMessage } from "./ai/ai-message";
-import { ContextMessage } from "./context-message";
-import { HumanMessage } from "./human-message";
-import { ImageMessage } from "./image-message";
 
 export type MessageProps = {
   question: string
   answer: string
+  model?: string
+  intent?: string
 };
 
 const CustomTrigger = forwardRef<
@@ -36,7 +33,7 @@ const CustomTrigger = forwardRef<
 
 CustomTrigger.displayName = "CustomTrigger";
 
-export const CustomChat: FC<MessageProps> = ({ question, answer }) => {
+export const CustomChat: FC<MessageProps> = ({ question, answer, model = "", intent = "" }) => {
   return (
     <Accordion
       type="single"
@@ -53,18 +50,12 @@ export const CustomChat: FC<MessageProps> = ({ question, answer }) => {
       >
         <CustomTrigger>
           <Flex direction="col" gap="md" items="start">
-            {/* <ImageMessage image={message.runConfig?.image} /> */}
-
-            {/* <ContextMessage context={message.runConfig?.context} /> */}
-
-            {/* <HumanMessage chatMessage={answer} /> */}
             <h1 className="text-gray-400">{question}</h1>
             <h1>{answer}</h1>
+            <p className="text-gray-400 text-sm italic">{intent} / {model}</p>
           </Flex>
         </CustomTrigger>
         <AccordionContent className="w-full items-start p-2">
-          {/* <AIMessage message={message} isLast={isLast} /> */}
-          {/* <h1>{answer}</h1> */}
         </AccordionContent>
       </AccordionItem>
     </Accordion>

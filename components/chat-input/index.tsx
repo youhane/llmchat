@@ -30,7 +30,6 @@ import { ScrollToBottomButton } from "./scroll-to-bottom-button";
 import { SelectedContext } from "./selected-context";
 import { StarterMessages } from "./starter-messages";
 import { useOpenRouterStore } from "@/libs/store/openrouter.ts/store";
-import { cleanObjectAndMakeIntoString } from "@/libs/utils/utils";
 
 export const ChatInput = () => {
   const { store, isReady, refetch } = useChatContext();
@@ -39,15 +38,14 @@ export const ChatInput = () => {
   const { preferences, isPreferencesReady } = usePreferenceContext();
   const { getAssistantByKey, getAssistantIcon } = useAssistantUtils();
   const { invokeModel } = useLLMRunner();
-  const { invokeOpenRouter } = useOpenRouter();
+  const { invokeOpenRouter, detectIntent } = useOpenRouter();
   const { editor } = useChatEditor();
   const session = store((state) => state.session);
   const isInitialized = store((state) => state.isInitialized);
   const setIsInitialized = store((state) => state.setIsInitialized);
-  // const context = store((state) => state.context);
   const { attachment, clearAttachment, handleImageUpload, dropzonProps } =
     useImageAttachment();
-  const {chats} = useOpenRouterStore();
+  const { chats } = useOpenRouterStore();
 
   const isFreshSession = !isInitialized;
 
@@ -59,12 +57,18 @@ export const ChatInput = () => {
     }
   }, [session?.id]);
 
-  const sendMessage = (input: string) => {
+  const sendMessage = async (input: string) => {
     console.log("input", input)
     setIsInitialized(true);
 
-    // invokeOpenRouter(input, cleanObjectAndMakeIntoString(chats));
-    invokeOpenRouter(input);
+    try {
+      const intentResults = await detectIntent(input);
+      console.log("intentResults", intentResults);
+      await invokeOpenRouter(input, intentResults);
+    } catch (error) {
+      console.error("Error in intent detection flow:", error);
+    }
+
     clearAttachment();
   };
 
@@ -135,8 +139,6 @@ export const ChatInput = () => {
       <div
         className={cn(
           "absolute bottom-0 left-0 right-0 h-[120px] bg-gradient-to-t from-zinc-25 from-40% to-transparent dark:bg-zinc-800/50 dark:from-zinc-800",
-          // isFreshSession &&
-          // "top-0 flex h-full flex-col items-center justify-center",
         )}
       />
 
@@ -149,61 +151,9 @@ export const ChatInput = () => {
             gap="md"
             className="mb-2 flex-1"
           >
-            {/* <Badge
-              onClick={() => setOpenChangelog(true)}
-              className="cursor-pointer gap-1"
-              variant="tertiary"
-            >
-              <Flame size={14} /> What&apos;s new
-            </Badge> */}
-
             <ChangeLogs open={openChangelog} setOpen={setOpenChangelog} />
-
-            {/* {session?.customAssistant ? (
-              <CustomAssistantAvatar
-                url={session?.customAssistant?.iconURL}
-                alt={session?.customAssistant?.name}
-                size="lg"
-              />
-            ) : (
-              getAssistantIcon(preferences.defaultAssistant, "lg", true)
-            )} */}
             <Flex direction="col" gap="xs" justify="center" items="center">
-              {/* <Type
-                size="lg"
-                textColor={session?.customAssistant ? "primary" : "secondary"}
-              >
-                {session?.customAssistant
-                  ? session?.customAssistant?.name
-                  : "How can I help you?"}
-              </Type> */}
-              {/* {session?.customAssistant && (
-                <Type
-                  size="sm"
-                  textColor="secondary"
-                  className="max-w-[400px] text-center"
-                >
-                  {session?.customAssistant?.description}
-                </Type>
-              )} */}
-              {/* {session?.customAssistant && (
-                <Button
-                  variant="bordered"
-                  size="sm"
-                  className="mt-2"
-                  onClick={() => {
-                    removeAssistantFromSessionMutation.mutate(session?.id, {
-                      onSuccess: () => {
-                        refetch();
-                      },
-                    });
-                  }}
-                >
-                  Remove
-                </Button>
-              )} */}
             </Flex>
-            {/* <ApiKeyStatus /> */}
           </Flex>
         )}
         {renderChatBottom()}

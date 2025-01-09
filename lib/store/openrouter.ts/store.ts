@@ -8,7 +8,7 @@ const initialState = {
 interface OpenRouterStoreState {
   chats: any[];
   currentMessage: any;
-  setChats: (questions:any, answers: any) => void;
+  setChats: (questions: any, answers: any, model: string, intent: string) => void;
   updateCurrentMessage: (message: any) => void;
   removeLastMessage: () => void;
   init: () => Promise<void>;
@@ -22,9 +22,9 @@ export const useOpenRouterStore = create<OpenRouterStoreState>((set, get) => ({
     console.log("chats", chats);
     set({ chats: chats.data });
   },
-  setChats: (question:any, originalAnswer: any) => {
+  setChats: (question: any, originalAnswer: any, model: string, intent: string) => {
     const answer = originalAnswer[0].content;
-    const newChat = { question, answer };
+    const newChat = { question, answer, model, intent };
     const { chats } = get();
     const newChats = [...chats, newChat];
     fetch("/api/chats", {
