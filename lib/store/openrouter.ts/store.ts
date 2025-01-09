@@ -20,7 +20,7 @@ export const useOpenRouterStore = create<OpenRouterStoreState>((set, get) => ({
     const response = await fetch("/api/chats");
     const chats = await response.json();
     console.log("chats", chats);
-    set({ chats });
+    set({ chats: chats.data });
   },
   setChats: (question:any, originalAnswer: any) => {
     const answer = originalAnswer[0].content;
