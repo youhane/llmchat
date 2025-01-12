@@ -1,4 +1,4 @@
-import { examplePrompts } from "@/config/example-prompts";
+// import { examplePrompts } from "@/config/example-prompts";
 import {
   useChatContext,
   usePreferenceContext,
@@ -85,7 +85,7 @@ export const ChatInput = () => {
   const renderChatBottom = () => {
     return (
       <>
-        {isFreshSession && (
+        {/* {isFreshSession && (
           <StarterMessages
             messages={
               session?.customAssistant?.startMessage?.map((m) => ({
@@ -94,7 +94,7 @@ export const ChatInput = () => {
               })) || examplePrompts
             }
           />
-        )}
+        )} */}
 
         <Flex items="center" justify="center" gap="sm" className="mb-2">
           <ScrollToBottomButton />

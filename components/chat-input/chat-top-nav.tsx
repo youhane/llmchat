@@ -41,12 +41,12 @@ export const ChatTopNav = () => {
         <Plus size={16} strokeWidth={2} />
       </Button>
 
-      <AssistantModal
+      {/* <AssistantModal
         selectedAssistantKey={selectedAssistantKey}
         onAssistantchange={setSelectedAssistantKey}
-      />
+      /> */}
 
-      <PluginSelect selectedAssistantKey={selectedAssistantKey} />
+      {/* <PluginSelect selectedAssistantKey={selectedAssistantKey} /> */}
     </TopNav>
   );
 };

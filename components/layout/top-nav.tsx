@@ -74,7 +74,7 @@ export const TopNav = ({
           {title && <Type weight="medium">{title}</Type>}
           {children}
         </Flex>
-        <Flex gap="xs" items="center">
+        {/* <Flex gap="xs" items="center">
           <Button
             variant="bordered"
             size="sm"
@@ -95,7 +95,7 @@ export const TopNav = ({
             <FlagIcon size={16} className="block md:hidden" />
             <span className="hidden md:block">Feedback</span>
           </Button>
-        </Flex>
+        </Flex> */}
       </Flex>
       {renderModal()}
     </Flex>

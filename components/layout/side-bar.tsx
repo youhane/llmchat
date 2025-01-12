@@ -112,7 +112,7 @@ export const Sidebar = () => {
               <Command size={12} /> K
             </Flex>
           </Button>
-          <Button
+          {/* <Button
             variant={isAssistantPage ? "secondary" : "ghost"}
             className="w-full justify-start gap-2 px-2"
             onClick={() => {
@@ -121,7 +121,7 @@ export const Sidebar = () => {
           >
             <ModelIcon type="assistants" size="sm" />
             Explore Assistants
-          </Button>
+          </Button> */}
         </Flex>
 
         {false ? (
