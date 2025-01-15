@@ -3,6 +3,16 @@ import { useChatContext } from "../context";
 import { useOpenRouterStore } from "../store/openrouter.ts/store";
 import { LLM_MAPPING } from "@/config/openrouter-models";
 
+type IntentData = {
+  intent: string;
+  accuracy: number;
+};
+
+type ParsedIntent = {
+  finalIntent: string;
+  otherIntents: IntentData[];
+};
+
 export const useOpenRouter = () => {
   const { store } = useChatContext();
   const editor = store((state) => state.editor);
@@ -44,13 +54,50 @@ export const useOpenRouter = () => {
       
       setIsGenerating(true);
       const responseContent = data.choices[0].message.content.trim().toLowerCase();
-      const otherIntents = responseContent.split(' ').slice(1);
+      // const otherIntents = responseContent.split(' ').slice(1);
   
-      const parseIntent = (intent: string): string => {
-        return intent.split(' ')[0];
+      // const parseIntent = (intent: string): string => {
+      //   console.log("intent.split(' ')", intent.split(' '))
+      //   return intent.split(' ')[1];
+      // };
+
+      const parseIntents = (input: string): ParsedIntent => {
+        // Split input into lines and filter out empty lines
+        const lines = input.split('\n').filter(line => line.trim());
+        
+        // Initialize array to store all intents
+        const intents: IntentData[] = [];
+        
+        // Process pairs of lines (intent and accuracy)
+        for (let i = 0; i < lines.length; i += 2) {
+          const intentLine = lines[i];
+          const accuracyLine = lines[i + 1];
+          
+          if (intentLine && accuracyLine) {
+            const intent = intentLine.split(':')[1].trim();
+            const accuracy = parseFloat(accuracyLine.split(':')[1].trim());
+            
+            intents.push({ intent, accuracy });
+          }
+        }
+        
+        // Sort intents by accuracy in descending order
+        intents.sort((a, b) => b.accuracy - a.accuracy);
+        
+        return {
+          finalIntent: intents[0].intent, // Highest accuracy intent
+          otherIntents: intents // All intents with their accuracies
+        };
       };
-  
-      let finalIntent = parseIntent(responseContent);
+
+      console.log("responseContent", responseContent)
+      
+      let {finalIntent, otherIntents} = parseIntents(responseContent);
+      
+      // let finalIntent = parseIntent(responseContent);
+      console.log("otherIntents", otherIntents)
+      console.log("finalIntent", finalIntent);
+      console.log("!(finalIntent in LLM_MAPPING)", !(finalIntent in LLM_MAPPING));
       
       if (!(finalIntent in LLM_MAPPING)) {
         finalIntent = "general knowledge";
@@ -60,10 +107,11 @@ export const useOpenRouter = () => {
       const result = {
         model: LLM_MAPPING[finalIntent as keyof typeof LLM_MAPPING],
         intent: finalIntent,
-        otherIntents: otherIntents.map((intent: string) => ({
-          model: LLM_MAPPING[parseIntent(intent) as keyof typeof LLM_MAPPING],
-          intent: parseIntent(intent)
-        }))
+        otherIntents: otherIntents
+        // otherIntents: otherIntents.map((intent: string) => ({
+        //   model: LLM_MAPPING[parseIntent(intent) as keyof typeof LLM_MAPPING],
+        //   intent: parseIntent(intent)
+        // }))
       };
   
       return result;
