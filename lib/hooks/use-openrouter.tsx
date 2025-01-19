@@ -54,12 +54,6 @@ export const useOpenRouter = () => {
       
       setIsGenerating(true);
       const responseContent = data.choices[0].message.content.trim().toLowerCase();
-      // const otherIntents = responseContent.split(' ').slice(1);
-  
-      // const parseIntent = (intent: string): string => {
-      //   console.log("intent.split(' ')", intent.split(' '))
-      //   return intent.split(' ')[1];
-      // };
 
       const parseIntents = (input: string): ParsedIntent => {
         // Split input into lines and filter out empty lines
@@ -94,7 +88,6 @@ export const useOpenRouter = () => {
       
       let {finalIntent, otherIntents} = parseIntents(responseContent);
       
-      // let finalIntent = parseIntent(responseContent);
       console.log("otherIntents", otherIntents)
       console.log("finalIntent", finalIntent);
       console.log("!(finalIntent in LLM_MAPPING)", !(finalIntent in LLM_MAPPING));
@@ -108,10 +101,6 @@ export const useOpenRouter = () => {
         model: LLM_MAPPING[finalIntent as keyof typeof LLM_MAPPING],
         intent: finalIntent,
         otherIntents: otherIntents
-        // otherIntents: otherIntents.map((intent: string) => ({
-        //   model: LLM_MAPPING[parseIntent(intent) as keyof typeof LLM_MAPPING],
-        //   intent: parseIntent(intent)
-        // }))
       };
   
       return result;

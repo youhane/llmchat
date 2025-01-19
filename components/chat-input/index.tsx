@@ -1,26 +1,18 @@
-// import { examplePrompts } from "@/config/example-prompts";
 import {
   useChatContext,
-  usePreferenceContext,
-  useSessions,
 } from "@/lib/context";
 import {
-  useAssistantUtils,
   useChatEditor,
   useImageAttachment,
-  useLLMRunner,
   useOpenRouter,
+  useScrollToBottom,
 } from "@/lib/hooks";
 import { slideUpVariant } from "@/lib/utils/animations";
 import { cn } from "@/lib/utils/clsx";
-import { Badge, Button, Flex, Type } from "@/ui";
+import { Flex } from "@/ui";
 import { motion } from "framer-motion";
-import { Flame } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ChangeLogs } from "../changelogs";
-import { CustomAssistantAvatar } from "../custom-assistant-avatar";
-import { FullPageLoader } from "../full-page-loader";
-import { ApiKeyStatus } from "./api-key-status";
 import { ChatActions } from "./chat-actions";
 import { ChatEditor } from "./chat-editor";
 import { ChatFooter } from "./chat-footer";
@@ -28,16 +20,11 @@ import { ImageAttachment } from "./image-attachment";
 import { ImageDropzoneRoot } from "./image-dropzone-root";
 import { ScrollToBottomButton } from "./scroll-to-bottom-button";
 import { SelectedContext } from "./selected-context";
-import { StarterMessages } from "./starter-messages";
-import { useOpenRouterStore } from "@/libs/store/openrouter.ts/store";
 
 export const ChatInput = () => {
-  const { store, isReady, refetch } = useChatContext();
-  const { removeAssistantFromSessionMutation } = useSessions();
+  const { scrollToBottom, showScrollToBottom } = useScrollToBottom();
+  const { store } = useChatContext();
   const [openChangelog, setOpenChangelog] = useState(false);
-  const { preferences, isPreferencesReady } = usePreferenceContext();
-  const { getAssistantByKey, getAssistantIcon } = useAssistantUtils();
-  const { invokeModel } = useLLMRunner();
   const { invokeOpenRouter, detectIntent } = useOpenRouter();
   const { editor } = useChatEditor();
   const session = store((state) => state.session);
@@ -45,7 +32,6 @@ export const ChatInput = () => {
   const setIsInitialized = store((state) => state.setIsInitialized);
   const { attachment, clearAttachment, handleImageUpload, dropzonProps } =
     useImageAttachment();
-  const { chats } = useOpenRouterStore();
 
   const isFreshSession = !isInitialized;
 
@@ -62,14 +48,17 @@ export const ChatInput = () => {
     setIsInitialized(true);
 
     try {
+      scrollToBottom();
       const intentResults = await detectIntent(input);
       console.log("intentResults", intentResults);
       await invokeOpenRouter(input, intentResults);
+      clearAttachment();
     } catch (error) {
       console.error("Error in intent detection flow:", error);
+    } finally {
+      scrollToBottom();
+      inputRef.current?.focus();
     }
-
-    clearAttachment();
   };
 
   const chatInputBackgroundContainer = cn(
@@ -85,17 +74,6 @@ export const ChatInput = () => {
   const renderChatBottom = () => {
     return (
       <>
-        {/* {isFreshSession && (
-          <StarterMessages
-            messages={
-              session?.customAssistant?.startMessage?.map((m) => ({
-                name: m,
-                content: m,
-              })) || examplePrompts
-            }
-          />
-        )} */}
-
         <Flex items="center" justify="center" gap="sm" className="mb-2">
           <ScrollToBottomButton />
         </Flex>
