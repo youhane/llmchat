@@ -52,7 +52,7 @@ export const useOpenRouter = () => {
   
       const data = await response.json();
       
-      setIsGenerating(true);
+      // setIsGenerating(true);
       const responseContent = data.choices[0].message.content.trim().toLowerCase();
 
       const parseIntents = (input: string): ParsedIntent => {
@@ -96,7 +96,7 @@ export const useOpenRouter = () => {
         finalIntent = "general knowledge";
       }
   
-      setIsGenerating(false);
+      // setIsGenerating(false);
       const result = {
         model: LLM_MAPPING[finalIntent as keyof typeof LLM_MAPPING],
         intent: finalIntent,
@@ -135,11 +135,11 @@ export const useOpenRouter = () => {
         })
       }).then((response) => response.json())
         .then((data) => {
-          setIsGenerating(true);
+          // setIsGenerating(true);
           editor?.commands.clearContent();
           setChats(input, data.choices.map((choice: any) => choice.message), intent.model, intent.intent);
           updateCurrentMessage(data.choices[0].message.content);
-          setIsGenerating(false);
+          // setIsGenerating(false);
         });
     } catch (error) {
       console.log(error);

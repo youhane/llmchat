@@ -22,18 +22,18 @@ import { ScrollToBottomButton } from "./scroll-to-bottom-button";
 import { SelectedContext } from "./selected-context";
 
 export const ChatInput = () => {
-  const { scrollToBottom, showScrollToBottom } = useScrollToBottom();
+  const { scrollToBottom } = useScrollToBottom();
   const { store } = useChatContext();
+  const setIsGenerating = store((state) => state.setIsGenerating);
   const [openChangelog, setOpenChangelog] = useState(false);
   const { invokeOpenRouter, detectIntent } = useOpenRouter();
   const { editor } = useChatEditor();
   const session = store((state) => state.session);
-  const isInitialized = store((state) => state.isInitialized);
   const setIsInitialized = store((state) => state.setIsInitialized);
   const { attachment, clearAttachment, handleImageUpload, dropzonProps } =
     useImageAttachment();
 
-  const isFreshSession = !isInitialized;
+  const isFreshSession = false;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -46,6 +46,7 @@ export const ChatInput = () => {
   const sendMessage = async (input: string) => {
     console.log("input", input)
     setIsInitialized(true);
+    setIsGenerating(true);
 
     try {
       scrollToBottom();
@@ -57,6 +58,7 @@ export const ChatInput = () => {
       console.error("Error in intent detection flow:", error);
     } finally {
       scrollToBottom();
+      // setIsGenerating(false);
       inputRef.current?.focus();
     }
   };
