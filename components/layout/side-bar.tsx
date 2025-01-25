@@ -73,7 +73,7 @@ export const Sidebar = () => {
             <HistoryItem
               session={session}
               key={session.id}
-              dismiss={() => {}}
+              dismiss={() => { }}
             />
           ))}
         </Flex>
@@ -91,27 +91,33 @@ export const Sidebar = () => {
           className="w-full pb-2 pt-4"
           gap="sm"
         >
-          <Button
-            size="sm"
-            className="w-full"
-            onClick={() => {
-              !isChatPage && push("/chat");
-              createSession();
-            }}
-          >
-            <Plus size={14} strokeWidth={2} /> New Chat
-          </Button>
-          <Button
-            size="sm"
-            variant="bordered"
-            className="w-full gap-2"
-            onClick={() => setIsCommandSearchOpen(true)}
-          >
-            <Search size={14} strokeWidth={2} /> Search
-            <Flex items="center" gap="xs">
-              <Command size={12} /> K
-            </Flex>
-          </Button>
+          <Tooltip content="Coming Soon!">
+            <Button
+              size="sm"
+              className="w-full"
+              // onClick={() => {
+              //   !isChatPage && push("/chat");
+              //   createSession();
+              // }}
+              disabled={true}
+            >
+              <Plus size={14} strokeWidth={2} /> New Chat
+            </Button>
+          </Tooltip>
+          <Tooltip content="Coming Soon!">
+            <Button
+              size="sm"
+              variant="bordered"
+              className="w-full gap-2"
+              // onClick={() => setIsCommandSearchOpen(true)}
+            >
+              <Search size={14} strokeWidth={2} /> Search
+              <Flex items="center" gap="xs">
+                <Command size={12} /> K
+              </Flex>
+            </Button>
+          </Tooltip>
+
           {/* <Button
             variant={isAssistantPage ? "secondary" : "ghost"}
             className="w-full justify-start gap-2 px-2"
@@ -147,14 +153,14 @@ export const Sidebar = () => {
         >
           {!user ? (
             <Button
-              size="sm"
+              size="md"
               variant="secondary"
               className="w-full gap-2"
               onClick={() => {
                 openSignIn();
               }}
             >
-              <LogInIcon size={16} strokeWidth={2} />
+              <LogInIcon size={20} strokeWidth={2} />
               SignIn{" "}
             </Button>
           ) : (
@@ -175,7 +181,7 @@ export const Sidebar = () => {
             </Flex>
           )}
 
-          <Flex gap="sm" className="w-full">
+          {/* <Flex gap="sm" className="w-full">
             <Button
               variant="bordered"
               size="sm"
@@ -198,18 +204,18 @@ export const Sidebar = () => {
               <Bolt size={16} strokeWidth={2} />
               Settings
             </Button>
-          </Flex>
+          </Flex> */}
           <Flex className="w-full items-center justify-between opacity-70">
             <Flex gap="xs">
               <Button
-                size="icon-xs"
+                size="icon-sm"
                 variant="ghost"
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               >
-                {theme === "dark" ? <Moon size={16} /> : <Sun size={16} />}
+                {theme === "dark" ? <Moon size={18} /> : <Sun size={18} />}
               </Button>
 
-              <Button
+              {/* <Button
                 size="icon-xs"
                 variant="ghost"
                 onClick={() => {
@@ -217,8 +223,8 @@ export const Sidebar = () => {
                 }}
               >
                 <BsGithub size={14} />
-              </Button>
-              <Button
+              </Button> */}
+              {/* <Button
                 size="icon-xs"
                 variant="ghost"
                 onClick={() => {
@@ -226,16 +232,16 @@ export const Sidebar = () => {
                 }}
               >
                 <BsTwitter size={14} />
-              </Button>
+              </Button> */}
             </Flex>
-            <Type
+            {/* <Type
               size="xs"
               weight="medium"
               textColor="secondary"
               className="px-1"
             >
               v {configs.version}
-            </Type>
+            </Type> */}
           </Flex>
         </Flex>
       </Flex>

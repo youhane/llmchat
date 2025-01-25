@@ -107,7 +107,7 @@ export default function ParentLayout({
                   </PreferenceProvider>
                 </AuthProvider>
               </ReactQueryProvider>
-              <WelcomeMessage />
+              {/* <WelcomeMessage /> */}
             </TooltipProvider>
           </ThemeProvider>
         </RootProvider>

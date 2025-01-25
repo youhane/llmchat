@@ -4,7 +4,7 @@ import Link from "next/link";
 export const ChatFooter = () => {
   return (
     <Flex className="w-full px-4 py-1" justify="center" gap="xs">
-      <Type
+      {/* <Type
         size="xxs"
         textColor="tertiary"
         className="inline-block text-center"
@@ -17,7 +17,7 @@ export const ChatFooter = () => {
         >
           trendy.design
         </Link>
-      </Type>
+      </Type> */}
     </Flex>
   );
 };
