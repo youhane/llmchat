@@ -14,6 +14,7 @@ import type { Viewport } from "next";
 import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import { AuthProvider2 } from '@/components/auth-provider'
 
 export const metadata: Metadata = {
   title: "aigator - chat with various LLMs",
@@ -100,11 +101,13 @@ export default function ParentLayout({
             <TooltipProvider>
               <ReactQueryProvider>
                 <AuthProvider>
-                  <PreferenceProvider>
-                    <SessionsProvider>
-                      <RootLayout>{children}</RootLayout>
-                    </SessionsProvider>
-                  </PreferenceProvider>
+                  <AuthProvider2>
+                    <PreferenceProvider>
+                      <SessionsProvider>
+                        <RootLayout>{children}</RootLayout>
+                      </SessionsProvider>
+                    </PreferenceProvider>
+                  </AuthProvider2>
                 </AuthProvider>
               </ReactQueryProvider>
               {/* <WelcomeMessage /> */}

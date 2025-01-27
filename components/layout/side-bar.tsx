@@ -1,14 +1,8 @@
-import { configs } from "@/config/index";
-import { useAuth, useSessions } from "@/lib/context";
-import { sortSessions } from "@/lib/utils/utils";
-import { useRootContext } from "@/libs/context/root";
 import { TChatSession } from "@/types";
 import { Button, Flex, Tooltip, Type } from "@/ui";
 import Avvvatars from "avvvatars-react";
 import {
-  Bolt,
   Command,
-  KeyRound,
   LogInIcon,
   LogOut,
   Moon,
@@ -16,23 +10,25 @@ import {
   Search,
   Sun,
 } from "lucide-react";
-import moment from "moment";
 import { useTheme } from "next-themes";
-import { usePathname, useRouter } from "next/navigation";
-import { BsGithub, BsTwitter } from "react-icons/bs";
 import { FullPageLoader } from "../full-page-loader";
 import { HistoryItem } from "../history/history-item";
-import { ModelIcon } from "../model-icon";
+import { signIn, signOut, useSession } from "next-auth/react"
+import { useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 
 export const Sidebar = () => {
-  const pathname = usePathname();
-  const { sessions, createSession, isAllSessionLoading } = useSessions();
-  const { setIsCommandSearchOpen, setOpenApiKeyModal } = useRootContext();
   const { theme, setTheme } = useTheme();
-  const { push } = useRouter();
-  const { open: openSignIn, logout, user } = useAuth();
-  const isAssistantPage = pathname.startsWith("/assistants");
-  const isChatPage = pathname.startsWith("/chat");
+  const { data: session, status } = useSession()
+  const user = session?.user
+
+  useEffect(() => {
+    // if(!session?.user?.email){
+    //   toast.error("Please login to view chats")
+    // }
+    console.log('session', session)
+    console.log('user', user)
+  }, [session, user]);
 
   const groupedSessions: Record<string, TChatSession[]> = {
     examples: [],
@@ -42,24 +38,6 @@ export const Sidebar = () => {
     last30Days: [],
     previousMonths: [],
   };
-
-  sortSessions(sessions, "createdAt")?.forEach((session) => {
-    const createdAt = moment(session.createdAt);
-    const now = moment();
-    if (session.isExample) {
-      groupedSessions.examples.push(session);
-    } else if (createdAt.isSame(now, "day")) {
-      groupedSessions.today.push(session);
-    } else if (createdAt.isSame(now.clone().add(1, "day"), "day")) {
-      groupedSessions.tomorrow.push(session);
-    } else if (createdAt.isAfter(now.clone().subtract(7, "days"))) {
-      groupedSessions.last7Days.push(session);
-    } else if (createdAt.isAfter(now.clone().subtract(30, "days"))) {
-      groupedSessions.last30Days.push(session);
-    } else {
-      groupedSessions.previousMonths.push(session);
-    }
-  });
 
   const renderGroup = (title: string, sessions: TChatSession[]) => {
     if (sessions.length === 0) return null;
@@ -95,10 +73,6 @@ export const Sidebar = () => {
             <Button
               size="sm"
               className="w-full"
-              // onClick={() => {
-              //   !isChatPage && push("/chat");
-              //   createSession();
-              // }}
               disabled={true}
             >
               <Plus size={14} strokeWidth={2} /> New Chat
@@ -109,7 +83,7 @@ export const Sidebar = () => {
               size="sm"
               variant="bordered"
               className="w-full gap-2"
-              // onClick={() => setIsCommandSearchOpen(true)}
+            // onClick={() => setIsCommandSearchOpen(true)}
             >
               <Search size={14} strokeWidth={2} /> Search
               <Flex items="center" gap="xs">
@@ -156,9 +130,7 @@ export const Sidebar = () => {
               size="md"
               variant="secondary"
               className="w-full gap-2"
-              onClick={() => {
-                openSignIn();
-              }}
+              onClick={() => signIn('google')}
             >
               <LogInIcon size={20} strokeWidth={2} />
               SignIn{" "}
@@ -169,12 +141,14 @@ export const Sidebar = () => {
               items="center"
               className="w-full rounded-lg border border-zinc-500/20 bg-white p-1 dark:bg-zinc-800"
             >
-              <Avvvatars value={user.email || "Anonymous"} size={24} />
+              <Avvvatars value={user.name || "Anonymous"} size={24} />
               <Type size="xs" className="line-clamp-1 flex-grow">
-                {user.email}
+                {user.name}
               </Type>
               <Tooltip content="Sign Out">
-                <Button size="icon-xs" variant="ghost" onClick={() => logout()}>
+                <Button size="icon-xs" variant="ghost"
+                  onClick={() => signOut()}
+                >
                   <LogOut size={14} strokeWidth={2} />
                 </Button>
               </Tooltip>
@@ -245,6 +219,7 @@ export const Sidebar = () => {
           </Flex>
         </Flex>
       </Flex>
+      <ToastContainer />
     </div>
   );
 };

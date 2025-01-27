@@ -1,7 +1,11 @@
 import prisma from "../prisma"
 
-const getAllChats = async () => {
-    return await prisma.chat.findMany()
+const getAllChats = async ({ email }: { email: string }) => {
+    return await prisma.chat.findMany({
+        where: {
+            userEmail: email
+        }
+    })
 }
 
 const createChat = async (data: any) => {

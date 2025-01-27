@@ -14,4 +14,5 @@ model Chat {
   model     String
   intent    String
   createdAt DateTime @default(now())
+  userEmail String
 }
