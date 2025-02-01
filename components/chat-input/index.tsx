@@ -47,16 +47,21 @@ export const ChatInput = () => {
     console.log("input", input)
     setIsInitialized(true);
     setIsGenerating(true);
+    clearAttachment();
+    // editor?.commands.clearContent();
+    // disable the editor while the message is being sent
+    editor?.setEditable(false);
 
     try {
       scrollToBottom();
       const intentResults = await detectIntent(input);
       console.log("intentResults", intentResults);
       await invokeOpenRouter(input, intentResults);
-      clearAttachment();
+      // clearAttachment();
     } catch (error) {
       console.error("Error in intent detection flow:", error);
     } finally {
+      editor?.setEditable(true);
       scrollToBottom();
       // setIsGenerating(false);
       inputRef.current?.focus();
