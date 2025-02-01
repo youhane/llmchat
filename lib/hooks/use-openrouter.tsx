@@ -129,7 +129,8 @@ export const useOpenRouter = () => {
             {
               "role": "user",
               // "content": `${context && "This is the context " + context} This is the input ${input}`,
-              "content": ` ${input}`,
+              // "content": ` ${input} - please format your response in a rich text format`,
+              "content": ` ${input} - please only return your response within a HTML text format`,
             }
           ]
         })
