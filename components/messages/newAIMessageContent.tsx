@@ -11,9 +11,10 @@ export type TAIMessage = {
   message: string;
   modelName: string;
   intent: string;
+  textContentRef: React.RefObject<HTMLDivElement>;
 };
 
-export const NewAIMessageContent = ({ message, modelName, intent }: TAIMessage) => {
+export const NewAIMessageContent = ({ message, modelName, intent, textContentRef }: TAIMessage) => {
   const { store } = useChatContext();
   // const session = store((state) => state.session);
   const messageRef = useRef<HTMLDivElement>(null);
@@ -50,6 +51,7 @@ export const NewAIMessageContent = ({ message, modelName, intent }: TAIMessage) 
           message={message}
           modelName={modelName}
           intent={intent}
+          textContentRef={textContentRef}
         />
       </Flex>
     </div>

@@ -15,12 +15,14 @@ export type TAIMessageActions = {
   message: string;
   modelName: string;
   intent: string;
+  textContentRef: React.RefObject<HTMLDivElement>;
 };
 
 export const NewAIMessageActions: FC<TAIMessageActions> = ({
   message,
   modelName,
-  intent
+  intent,
+  textContentRef,
 }) => {
   const { store } = useChatContext();
   const isGenerating = store((state) => state.isGenerating);
@@ -30,7 +32,9 @@ export const NewAIMessageActions: FC<TAIMessageActions> = ({
 
   const { showCopied, copy } = useClipboard();
   const handleCopyContent = () => {
-    copy(message)
+    // copy(message)
+    if(!textContentRef?.current) return;
+    copy(textContentRef?.current?.innerText);
   };
 
   // const handleDeleteMessage = () => {
