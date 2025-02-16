@@ -14,6 +14,8 @@ interface OpenRouterStoreState {
   updateCurrentMessage: (message: any) => void;
   removeLastMessage: () => void;
   init: () => Promise<void>;
+  currentSelectedModel: string;
+  setCurrentSelectedModel: (model: string) => void;
 }
 
 export const useOpenRouterStore = create<OpenRouterStoreState>((set, get) => ({
@@ -58,10 +60,13 @@ export const useOpenRouterStore = create<OpenRouterStoreState>((set, get) => ({
       set({ currentMessage: newMessage });
     }
   },
-
   removeLastMessage: () => {
     const { chats } = get();
     const newMessages = chats.slice(0, -1);
     set({ chats: newMessages });
+  },
+  currentSelectedModel: "",
+  setCurrentSelectedModel: (model: string) => {
+    set({ currentSelectedModel: model });
   },
 }));

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 
 const ChatSessionPage = () => {
   const { activeSessionId } = useSessions();
+  // const { currentSelectedModel } = useOpenRouterStore();
 
   useEffect(() => {
     useOpenRouterStore.getState().init();
@@ -20,6 +21,7 @@ const ChatSessionPage = () => {
         <Flex className="w-full" direction="col">
           <ChatTopNav />
           <ChatMessages />
+          {/* <h1>{currentSelectedModel}</h1> */}
           <ChatInput />
         </Flex>
       </PromptsProvider>
