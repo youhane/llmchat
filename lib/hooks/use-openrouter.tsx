@@ -21,6 +21,7 @@ export const useOpenRouter = () => {
   const { setChats, updateCurrentMessage, setCurrentSelectedModel } = useOpenRouterStore();
 
   const detectIntent = async (input: any, context?: any) => {
+    setIsGenerating(true);
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -102,6 +103,7 @@ export const useOpenRouter = () => {
         intent: finalIntent,
         otherIntents: otherIntents
       };
+      setCurrentSelectedModel(result.model);
   
       return result;
     } catch (error) {
@@ -112,6 +114,8 @@ export const useOpenRouter = () => {
         variant: "destructive",
       });
       throw error;
+    } finally {
+      // setIsGenerating(false);
     }
   };
 
@@ -200,6 +204,7 @@ export const useOpenRouter = () => {
       });
     } finally {
       setIsGenerating(false); // Ensure generating state is updated
+      setCurrentSelectedModel(""); // Reset the model when done
     }
   };
 

@@ -113,6 +113,7 @@ export const ChatInput = () => {
     // Don't set isGenerating here - let the hook handle it
     clearAttachment();
     editor?.setEditable(false);
+    // setIsGenerating(true);
   
     try {
       scrollToBottom();
@@ -126,6 +127,7 @@ export const ChatInput = () => {
       editor?.setEditable(true);
       scrollToBottom();
       inputRef.current?.focus();
+      // setIsGenerating(false); // Ensure generating state is updated
       // Don't clear the model here - it should persist until the next message starts
     }
   };

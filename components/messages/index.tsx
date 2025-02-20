@@ -2,16 +2,39 @@ import { useChatContext } from "@/libs/context";
 import { PreviousMessages } from "./previous-messages";
 import { Flex, Spinner, Type } from "@/ui";
 import { useOpenRouterStore } from "@/libs/store/openrouter.ts/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const ChatMessages = () => {
   const { store } = useChatContext();
   const isGenerating = store((state) => state.isGenerating);
   const { currentSelectedModel } = useOpenRouterStore();
+  const [progressText, setProgressText] = useState("");
 
   useEffect(() => {
     console.log("Current model changed to:", currentSelectedModel);
   }, [currentSelectedModel]);
+
+  // useEffect(() => {
+  //   if(isGenerating){
+  //     if(currentSelectedModel === ""){
+  //       setProgressText("Selecting model...");
+  //     } else {
+  //       setProgressText("Generating..." + currentSelectedModel);
+  //     }
+  //   }
+  // }, [currentSelectedModel, isGenerating]);
+
+  useEffect(() => {
+    if (isGenerating) {
+      setProgressText(
+        currentSelectedModel === "" 
+          ? "Selecting model..." 
+          : `Generating with ${currentSelectedModel}...`
+      );
+    } else {
+      setProgressText("");
+    }
+  }, [currentSelectedModel, isGenerating]);
 
   return (
     <div
@@ -25,7 +48,8 @@ export const ChatMessages = () => {
             <Flex gap="sm" items="center">
               <Spinner />
               <Type size="sm" textColor="tertiary">
-                {"Generating..."} {currentSelectedModel}
+                {progressText}
+                {/* {currentSelectedModel === "" ? "Selecting model..." : "Generating..."} {currentSelectedModel} */}
               </Type>
             </Flex>
           )}
