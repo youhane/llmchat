@@ -45,69 +45,6 @@ export const ChatInput = () => {
     }
   }, [session?.id]);
 
-  // const sendMessage = async (input: string) => {
-  //   console.log("input", input)
-  //   setIsInitialized(true);
-  //   setIsGenerating(true);
-  //   clearAttachment();
-  //   // editor?.commands.clearContent();
-  //   // disable the editor while the message is being sent
-  //   editor?.setEditable(false);
-
-  //   try {
-  //     scrollToBottom();
-  //     const intentResults = await detectIntent(input);
-  //     console.log("intentResults", intentResults);
-  //     // setCurrentSelectedModel(intentResults?.model);
-
-  //     console.log("Current model before setting:", useOpenRouterStore.getState().currentSelectedModel);
-  //     setCurrentSelectedModel(intentResults?.model);
-  //     console.log("Current model after setting:", useOpenRouterStore.getState().currentSelectedModel);
-
-  //     await invokeOpenRouter(input, intentResults);
-  //     // clearAttachment();
-  //   } catch (error) {
-  //     console.error("Error in intent detection flow:", error);
-  //   } finally {
-  //     editor?.setEditable(true);
-  //     scrollToBottom();
-  //     // setIsGenerating(false);
-  //     inputRef.current?.focus();
-  //     setCurrentSelectedModel("");
-  //   }
-  // };
-
-
-  // const sendMessage = async (input: string) => {
-  //   setIsInitialized(true);
-  //   setIsGenerating(true);
-  //   clearAttachment();
-  //   editor?.setEditable(false);
-  
-  //   try {
-  //     scrollToBottom();
-  //     const intentResults = await detectIntent(input);
-  //     console.log("intentResults", intentResults);
-      
-  //     // Update the model immediately and wait for it to be set
-  //     if (intentResults?.model) {
-  //       setCurrentSelectedModel(intentResults.model);
-  //       // Optional: Force a re-render or wait for state to update
-  //       await new Promise(resolve => setTimeout(resolve, 0));
-  //     }
-      
-  //     await invokeOpenRouter(input, intentResults);
-  //   } catch (error) {
-  //     console.error("Error in intent detection flow:", error);
-  //   } finally {
-  //     editor?.setEditable(true);
-  //     scrollToBottom();
-  //     inputRef.current?.focus();
-  //     setCurrentSelectedModel(""); // Reset the model when done
-  //   }
-  // };
-
-
   const sendMessage = async (input: string) => {
     setIsInitialized(true);
     // Don't set isGenerating here - let the hook handle it

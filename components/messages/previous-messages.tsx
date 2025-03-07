@@ -14,7 +14,7 @@ export const PreviousMessages = () => {
   const isGenerating = store((state) => state.isGenerating);
 
   const renderMessage = (message: any) => {
-    console.log("message", message);
+    // console.log("message", message);
     // return <CustomChat
     //   answer={message.answer}
     //   question={message.question}
@@ -30,7 +30,7 @@ export const PreviousMessages = () => {
   };
 
   const previousMessages = useMemo(() => {
-    console.log("messages", messages)
+    // console.log("messages", messages)
     return messages.map(renderMessage);
   }, [messages]);
 
