@@ -55,7 +55,7 @@ export const ChatInput = () => {
     try {
       scrollToBottom();
       const intentResults = await detectIntent(input);
-      console.log("intentResults", intentResults);
+      // console.log("intentResults", intentResults);
       // Don't set the model here - let invokeOpenRouter handle it
       await invokeOpenRouter(input, intentResults);
     } catch (error) {

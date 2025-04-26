@@ -89,9 +89,7 @@ export const useOpenRouter = () => {
       
       let {finalIntent, otherIntents} = parseIntents(responseContent);
       
-      console.log("otherIntents", otherIntents)
       console.log("finalIntent", finalIntent);
-      console.log("!(finalIntent in LLM_MAPPING)", !(finalIntent in LLM_MAPPING));
       
       if (!(finalIntent in LLM_MAPPING)) {
         finalIntent = "general knowledge";
@@ -142,6 +140,17 @@ export const useOpenRouter = () => {
 
       const data = await response.json();
       console.log({data})
+
+      if(data.error){
+        toast({
+          title: "Error",
+          description: data.error.message,
+          variant: "destructive",
+        });
+
+        editor?.commands.clearContent();
+        return;
+      }
       
       // Set the model before clearing content
       if (intent?.model) {
